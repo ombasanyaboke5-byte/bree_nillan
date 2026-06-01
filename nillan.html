@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>date me?</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      overflow:hidden;
+      height:100vh;
+      background:#000;
+    }
+
+    .video-container{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      z-index:-2;
+    }
+
+    .video-container video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.45);
+      z-index:-1;
+    }
+
+    .content{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      color:white;
+      padding:20px;
+    }
+
+    h1{
+      font-size:4rem;
+      margin-bottom:20px;
+      animation: glow 2s infinite alternate;
+    }
+
+    p{
+      max-width:700px;
+      font-size:1.4rem;
+      line-height:1.8;
+      margin-bottom:40px;
+    }
+
+    .heart{
+      color:#ff4d6d;
+      animation: heartbeat 1s infinite;
+      display:inline-block;
+    }
+
+    .buttons{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      padding:15px 35px;
+      border:none;
+      border-radius:50px;
+      font-size:1.2rem;
+      cursor:pointer;
+      transition:0.3s ease;
+      font-weight:bold;
+    }
+
+    .yes-btn{
+      background:#ff4d6d;
+      color:white;
+      box-shadow:0 0 20px rgba(255,77,109,0.6);
+    }
+
+    .yes-btn:hover{
+      transform:scale(1.1);
+      background:#ff1f4b;
+    }
+
+    .no-btn{
+      background:white;
+      color:#333;
+    }
+
+    .no-btn:hover{
+      transform:translateX(150px);
+    }
+
+    .message{
+      margin-top:40px;
+      font-size:2rem;
+      display:none;
+      color:#ffd166;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes heartbeat{
+      0%{transform:scale(1);}
+      25%{transform:scale(1.2);}
+      50%{transform:scale(1);}
+      75%{transform:scale(1.2);}
+      100%{transform:scale(1);}
+    }
+
+    @keyframes glow{
+      from{
+        text-shadow:0 0 10px #fff,
+                    0 0 20px #ff4d6d,
+                    0 0 30px #ff4d6d;
+      }
+      to{
+        text-shadow:0 0 20px #fff,
+                    0 0 40px #ff4d6d,
+                    0 0 60px #ff4d6d;
+      }
+    }
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .floating-hearts{
+      position:absolute;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      top:0;
+      left:0;
+      pointer-events:none;
+    }
+
+    .floating-hearts span{
+      position:absolute;
+      bottom:-50px;
+      color:#ff4d6d;
+      font-size:20px;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp{
+      0%{
+        transform:translateY(0) rotate(0deg);
+        opacity:1;
+      }
+      100%{
+        transform:translateY(-120vh) rotate(360deg);
+        opacity:0;
+      }
+    }
+
+    @media(max-width:768px){
+      h1{
+        font-size:2.5rem;
+      }
+
+      p{
+        font-size:1rem;
+      }
+
+      button{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="https://cdn.coverr.co/videos/coverr-a-couple-holding-hands-1569306326838?download=1080p" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <div class="overlay"></div>
+  </div>
+
+  <!-- Floating Hearts -->
+  <div class="floating-hearts" id="hearts"></div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>B & N = BRIHANNA & NILLAN <br>will you go on a picnic date with me?? <span class="heart">❤</span></h1>
+
+    <p>
+      From the moment you came into my life, every day has felt magical.
+      You are my happiness, my reason to smile,and a best friend too. Thank you for everything
+    </p>
+
+    <div class="buttons">
+      <button class="yes-btn" onclick="showMessage()">YES💍</button>
+      <button class="no-btn" id="noBtn">NO😢</button>
+    </div>
+
+    <div class="message" id="message">
+      🎉 Your the best boyfriend ever! ❤️
+    </div>
+  </div>
+
+  <script>
+    // Floating hearts effect
+    const heartsContainer = document.getElementById("hearts");
+
+    function createHeart() {
+      const heart = document.createElement("span");
+      heart.innerHTML = "❤";
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 25 + 15 + "px";
+      heart.style.animationDuration = Math.random() * 5 + 5 + "s";
+
+      heartsContainer.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+    setInterval(createHeart, 300);
+
+    // YES button action
+    function showMessage() {
+      document.getElementById("message").style.display = "block";
+
+      // Create extra hearts
+      for(let i = 0; i < 50; i++){
+        setTimeout(createHeart, i * 100);
+      }
+    }
+
+    // NO button escape effect
+    const noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - 150);
+      const y = Math.random() * (window.innerHeight - 100);
+
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+  </script>
+
+</body>
+</html>
